@@ -1,3 +1,4 @@
+import axios from "axios";
 import axiosInstance from "../axiosInstance"
 
 export const loginUser=async(data)=>{
@@ -94,12 +95,12 @@ export const Checkcarts = async(data) =>{
 }
 
 
-export const Logout = async() =>{
-    try{
-        let response = await axiosInstance.delete("/logout")
-        return response
-
+export const Buysproduct = async() =>{
+    try {
+        let response = await axiosInstance.get("/buy")
+            return response.data
     }catch(err){
         console.log(err)
     }
 }
+

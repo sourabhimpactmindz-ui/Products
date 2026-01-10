@@ -231,23 +231,3 @@ export const deleteproduct = async (req, res) => {
   }
 };
 
-export const Logout = async (req, res) => {
-  const token = req.cookies.refreshToken;
-  try {
-    if (token) {
-      res.clearCookie("refreshToken", {
-        httpOnly: true,
-        secure: false,
-        sameSite: "lax",
-        path: "/",
-      });
-      return res
-        .status(200)
-        .json({ message: "user Logout suceesfully !", staus: true });
-    }
-  } catch (err) {
-    return res
-      .status(500)
-      .json({ message: "internal error", error: err.message, status: false });
-  }
-};

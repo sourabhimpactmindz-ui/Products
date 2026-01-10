@@ -26,3 +26,24 @@
 // })
 // console.log(result)
 
+// import React, { useState } from 'react'
+// import { Buysproduct } from '../services/UserServices/UserServices'
+
+// const Buy_Products = () => {
+//     const [buy,setbuy] = useState()
+
+//     const buyhander = async() =>{
+//         const res = await Buysproduct()
+
+//         console.log(res)
+                         
+//     }
+
+//   return (
+//     <>
+    
+//     </>
+//   )
+// }
+
+// export default Buy_Products

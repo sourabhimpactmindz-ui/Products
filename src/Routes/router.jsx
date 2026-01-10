@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Login } from "../Page/login";
+
 import { Home } from "../Page/Home";
 import { Createuser } from "../Page/Create-user";
 import { Allproducts } from "../Page/products";
@@ -8,6 +8,9 @@ import Getuser from "../Page/getuser";
 import { Getcart } from "../Page/getcart";
 import Success from "../Page/success";
 import Cencle from "../Page/cencle";
+import ODERS from "../Page/oderss";
+import { Login } from "../Page/Login";
+
 
 
 
@@ -51,6 +54,10 @@ const router = createBrowserRouter([
         path:"/get",
         element:<Getcart></Getcart>
        },
+       {
+        path:"/buy",
+        element : <ODERS></ODERS>
+       }
 
     ]
 }

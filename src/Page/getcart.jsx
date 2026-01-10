@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import {Checkcarts, deletecart, Getcartproducts } from '../services/UserServices/UserServices'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 export const  Getcart=()=> {
   const [carts,setcart] = useState([])
-
+  const navigate = useNavigate()
   const fatchcart = async() =>{
     try{
     const res = await Getcartproducts();
@@ -55,7 +56,13 @@ const checkoutHandler = async() =>{
 
 
 return (
+  <>
+  <div className="backbutton-get">
+  <button onClick={() => navigate("/home")}>← Back</button>
+</div>
   <div className="cart-container">
+  
+    
     <h2>My Cart</h2>
 
     {carts.length > 0 ? (
@@ -97,8 +104,13 @@ return (
     ) : (
       <p className="empty-cart">Your cart is empty</p>
     )}
+
   </div>
+  
+</>  
+
 );
 }
+
 
 export default Getcart

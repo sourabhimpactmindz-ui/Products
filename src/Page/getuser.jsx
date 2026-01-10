@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { getusers, Logout } from '../services/UserServices/UserServices';
+import { getusers} from '../services/UserServices/UserServices';
 
 export const  Getuser = () => {
   const navigate = useNavigate();
@@ -21,17 +21,6 @@ useEffect(() =>{
 },[])
 
 
-const logoutuser = async() =>{
-  try {
-    localStorage.removeItem('jwtToken')
-    await Logout();
-    navigate('/')
-
-    
-  } catch (error) {
-    console.log(err)
-  }
-}
 
 return (
   <>
@@ -57,9 +46,9 @@ return (
             : ""}
         </p>
       </div>
-      <div className='log'>
+      {/* <div className='log'>
     <button onClick={logoutuser}>Logout</button>
-  </div>
+  </div> */}
     </div>
       
   </div>

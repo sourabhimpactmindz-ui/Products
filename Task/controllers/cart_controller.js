@@ -182,7 +182,7 @@ export const checkoutcart = async (req, res) => {
       const product = products.find(
         (p) => p._id.toString() === item.product.toString()
       );
-      console.log(product);
+
       if (!product) {
         throw new Error("Product not found");
       }
@@ -229,40 +229,61 @@ export const webhooks = async (req, res) => {
       sig,
       process.env.STRIPE_WEBHOOK_SECRET
     );
+  } catch (err) {
+    console.log(err);
+  }
+  res.status(200).json({ received: true });
 
-    if (event.type === "checkout.session.completed") {
-      const session = event.data.object;
+  if (event.type === "checkout.session.completed") {
+    const session = event.data.object;
 
-      const { userid, cartid } = session.metadata;
-      const oder = await Cart.findOne({ paymentId: session.payment_intent });
+    const { userid, cartid } = session.metadata;
+    const oder = await Oder.findOne({ paymentId: session.payment_intent });
 
-      if (oder) {
-        return res.status(200).json({ recevied: true });
+    if (oder) {
+      return res.status(200).json({ recevied: true });
+    }
+
+    const cart = await Cart.findById(cartid).populate("products.product");
+
+    try {
+      if (!cart) {
+        return res.status(404).json({ message: "Cart not found" });
       }
 
-      const cart = await Cart.findById(cartid).populate("products.product") ;
-{}
-      if(!cart){
-        return res.status(404).json({message:"Cart not found"})
-      }
-    const products = cart.products.map(item =>({
-          productId :item.product,
-          quantity : item.quantity,
-          price : item.product.price
-        }))
+      const products = cart.products.map((item) => ({
+        product: item.product._id,
+        name: item.product.name,
+        quantity: item.quantity,
+        price: item.product.price,
+      }));
 
-     await Oder.create({
+      const newoder = await Oder.create({
         user: userid,
-        
+        products,
         paymentId: session.payment_intent,
-        totalamount: session.amount_total/100,
-        status: session.status,
+        totalamount: session.amount_total / 100,
+        status: "completed",
       });
-      console.log(newoder)
 
       return res.status(200).json({ recevied: true, newoder: newoder });
+    } catch (err) {
+      console.log(err);
     }
-    return res.status(200).json({ recevied: true });
+  }
+};
+
+export const Buyproducts = async (req, res) => {
+  const userid = req.userid;
+
+  try {
+    const buy = await Oder.find({ user: userid }).populate("products.product");
+    if (!buy || buy.length === 0) {
+      return res.status(404).json({ message: "Empty", status: false });
+    }
+    return res
+      .status(200)
+      .json({ message: "yours Buy products", buy: buy, status: true });
   } catch (err) {
     console.log(err);
   }

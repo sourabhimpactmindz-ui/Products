@@ -13,7 +13,8 @@ const oderSchema = new mongoose.Schema({
         ref: "Product"
       },
       quantity: Number,
-      price: Number
+      price: Number,
+      name : String
     },
 ],
   totalamount: {
@@ -21,7 +22,7 @@ const oderSchema = new mongoose.Schema({
     required: true
   },
   paymentId: {
-    type: String
+    type: String            
   },
   status: {
     type : String,
