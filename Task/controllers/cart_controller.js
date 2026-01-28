@@ -5,6 +5,7 @@ import { Product } from "../Model/user_product.js";
 import Stripe from "stripe";
 import dotenv from "dotenv";
 import { Oder } from "../Model/oder.js";
+import { handleEmail } from "../service/oder_service.js";
 
 const stripe = new Stripe(process.env.STRIPE_SECREAT_KEY);
 
@@ -141,7 +142,7 @@ export const removecart = async (req, res) => {
           products: { product: Id },
         },
       },
-      { new: true }
+      { new: true },
     );
 
     if (!cart) {
@@ -180,7 +181,7 @@ export const checkoutcart = async (req, res) => {
 
     const lineItems = cart.products.map((item) => {
       const product = products.find(
-        (p) => p._id.toString() === item.product.toString()
+        (p) => p._id.toString() === item.product.toString(),
       );
 
       if (!product) {
@@ -230,48 +231,69 @@ export const webhooks = async (req, res) => {
       process.env.STRIPE_WEBHOOK_SECRET
     );
   } catch (err) {
-    console.log(err);
+    console.log("Webhook Error:", err.message);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
   }
-  res.status(200).json({ received: true });
+
 
   if (event.type === "checkout.session.completed") {
     const session = event.data.object;
-
     const { userid, cartid } = session.metadata;
-    const oder = await Oder.findOne({ paymentId: session.payment_intent });
 
-    if (oder) {
-      return res.status(200).json({ recevied: true });
+
+    const existingOrder = await Oder.findOne({
+      paymentId: session.payment_intent
+    });
+
+    if (existingOrder) {
+      return res.status(200).json({ received: true });
     }
 
     const cart = await Cart.findById(cartid).populate("products.product");
-
-    try {
-      if (!cart) {
-        return res.status(404).json({ message: "Cart not found" });
-      }
-
-      const products = cart.products.map((item) => ({
-        product: item.product._id,
-        name: item.product.name,
-        quantity: item.quantity,
-        price: item.product.price,
-      }));
-
-      const newoder = await Oder.create({
-        user: userid,
-        products,
-        paymentId: session.payment_intent,
-        totalamount: session.amount_total / 100,
-        status: "completed",
-      });
-
-      return res.status(200).json({ recevied: true, newoder: newoder });
-    } catch (err) {
-      console.log(err);
+    const user = await User.findById(userid);  
+    if (!cart || !user) {
+      return res.status(404).json({ message: "Cart or User not found" });
     }
+
+    const products = cart.products.map(item => ({
+      product: item.product._id,
+      name: item.product.name,
+      quantity: item.quantity,
+      price: item.product.price
+    }));
+
+
+
+    const totalamount = session.amount_total / 100;
+
+const ordercount = await Oder.countDocuments({ user: user._id });
+
+    const neworder = await Oder.create({
+      user: userid,
+      products,
+      paymentId: session.payment_intent,
+      totalamount,
+      status: "completed"
+    });
+
+    
+    await handleEmail({
+      user,
+      totalamount,
+      paymentstatus: "completed",
+      ifFirstoder : ordercount === 0
+    });
+
+    return res.status(200).json({
+      received: true,
+      orderId: neworder._id
+    });
   }
+
+  
+  return res.status(200).json({ received: true });
 };
+
 
 export const Buyproducts = async (req, res) => {
   const userid = req.userid;
@@ -308,7 +330,7 @@ export const updatecart = async (req, res) => {
           "products.$.quantity": quantity,
         },
       },
-      { new: true }
+      { new: true },
     ).populate("products.product");
     console.log(cart);
     if (!cart) {
