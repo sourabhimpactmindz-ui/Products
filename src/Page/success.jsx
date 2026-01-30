@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 
 function Success() {
     const navigate = useNavigate();
+      useEffect(() => {
+    // 🔥 CART RESET AFTER PAYMENT
+    localStorage.removeItem("cartCount");
+  }, []);
   return (
     <div className="success-container">
       <div className="success-card">

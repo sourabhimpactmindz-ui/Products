@@ -281,7 +281,7 @@ const ordercount = await Oder.countDocuments({ user: user._id });
       user,
       totalamount,
       paymentstatus: "completed",
-      ifFirstoder : ordercount === 0
+      ifFirstoder : ordercount === 1
     });
 
     return res.status(200).json({

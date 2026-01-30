@@ -171,17 +171,23 @@ export const Getuser = async (req, res) => {
 };
 
 export const getproduct = async (req, res) => {
+  const keyword = req.query.search || ''
+
+
   try {
-    const product = await Product.find();
-    if (!product || !product.length === 0) {
-      return res
-        .status(401)
-        .json({ message: "Product is not found", status: false });
-    } else {
-      return res
-        .status(200)
-        .json({ message: "All products", product: product, status: true });
-    }
+      let product;
+
+    if(!keyword){
+      
+     product = await Product.find()
+    }else{
+     product = await Product.find({
+      name : {$regex : keyword , $options : 'i'}
+    }).limit(5)
+
+  }
+  return res.status(200).json(product)
+ 
   } catch (err) {
     console.log({ message: "server error", error: err.message, status: false });
   }

@@ -22,9 +22,9 @@ export const createuser = async(data) =>{
 }
 
 
-export const getproduct = async() =>{
+export const getproduct = async(value) =>{
     try{
-        let response = await axiosInstance.get("/get-product")
+        let response = await axiosInstance.get(`/get-product?search=${value}`)
         return response.data;
     }catch(err){
         console.log(err)

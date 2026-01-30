@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import {Link} from 'react-router-dom'
-import { Allproducts } from './products';
+import  Allproducts  from './products';
 import { useNavigate } from 'react-router-dom';
 
 
 
-export const Home = () =>{
+const Home = () =>{
   const navigate = useNavigate()
   const handle = () =>{
     console.log('logut')
@@ -20,6 +20,7 @@ export const Home = () =>{
         <Link to='/get'>Get-Cart</Link>
         <Link to='/profile'>Profile</Link>
         <Link to="/buy">Buy Products</Link>
+        
          <Link onClick={() =>handle()}>Logout</Link>
       </div>
     </div>
@@ -28,3 +29,5 @@ export const Home = () =>{
     </>
   );
 };
+
+export default Home

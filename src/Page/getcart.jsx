@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import {Checkcarts, deletecart, Getcartproducts } from '../services/UserServices/UserServices'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-export const  Getcart=()=> {
+
+const  Getcart=()=> {
   const [carts,setcart] = useState([])
   const navigate = useNavigate()
   const fatchcart = async() =>{
@@ -22,7 +23,6 @@ export const  Getcart=()=> {
   const Removecart = async(id)=>{
     try{
       const res = await deletecart(id);
-      console.log(res)
       setcart(prev => prev.filter(item => item.product._id !== id))
       fatchcart()
       toast.success("Product successfully removed")

@@ -14,7 +14,6 @@ export const handleEmail = async ({ user, totalamount, paymentstatus , ifFirstod
   }
 
 
-  
   if(ifFirstoder && totalamount >= 3000){
     await TosendWelcomeAndThankuh(user , totalamount)
     return

@@ -8,7 +8,6 @@ function App() {
   const fatchrefresh = async() =>{
     try{
     const res = await refreshtoken();
-    console.log('REFERESH==>',res);
     
     const {token} = res;
     localStorage.setItem("jwtToken",token);

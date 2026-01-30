@@ -139,6 +139,7 @@
 
 .products-container h2 {
   display: flex;
+
   justify-content: center;
   margin-bottom: 25px;
   font-size: 28px;
@@ -209,7 +210,7 @@
 /* ===== HOME HEADER ===== */
 
 .home-container {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+ background: linear-gradient(135deg, #6a8ef7, #20033e);
   display: flex;
   justify-content: flex-end;
   padding: 18px 30px;
@@ -279,7 +280,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+ background: linear-gradient(135deg, #92a6fd, #270648);
   padding: 20px;
 }
 
@@ -886,4 +887,105 @@ position: relative;
   color: #ffffff;
 }
 
+.cart-link {
+  position: relative;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 999px;
+  line-height: 1;
+}
+
+/* =========================
+   SEARCH SECTION (PRO)
+========================= */
+
+.search-section {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 30px 0 40px; /* top spacing from navbar */
+  position: relative;
+  z-index: 20;
+}
+
+/* SEARCH WRAPPER */
+.search-wrapper {
+  position: relative;   /* dropdown anchor */
+  width: 360px;         /* slightly wider = premium feel */
+}
+
+/* SEARCH INPUT */
+.search-input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  background: #fff;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+/* SEARCH DROPDOWN */
+.search-list {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  list-style: none;
+  margin: 0;
+  padding: 6px 0;
+  max-height: 240px;
+  overflow-y: auto;
+  z-index: 1000;
+  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.18);
+}
+
+/* SEARCH ITEM */
+.search-item {
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* HOVER */
+.search-item:hover {
+  background: #eef2ff;
+}
+
+/* LAST ITEM */
+.search-item:last-child {
+  border-bottom: none;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+  .search-wrapper {
+    width: 90%;
+  }
+}
 
