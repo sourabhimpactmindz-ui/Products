@@ -87,11 +87,6 @@ toast.success("Successfully added to cart 🛒");
 }
 
     useEffect(() =>{
-         fatchproduct()
-
-    },[])
-
-    useEffect(() =>{
       if(debouncetext){
          fatchproduct(debouncetext)
          setshowList(true)
@@ -137,9 +132,6 @@ toast.success("Successfully added to cart 🛒");
   </div>
 </div>
 
-
-
-
      <div className="card-wrapper">
   {products.length > 0 ? (
     products.map((item) => (
@@ -148,10 +140,10 @@ toast.success("Successfully added to cart 🛒");
         <p>Description : {item.description}</p>
         <p className="price">Price : ${item.price}</p>
         <div className='counter'>
-          <button className="btn" onClick={() => increment(item?._id)}>+ {item.quantity}</button>
+          <button className="btn" onClick={() => increment(item?._id)}> + {item.quantity}</button>
         <div className='count'>{getQuantity(item._id)}</div>
 
-          <button className="btn" onClick={() => decrement(item?._id)}>- {item.quantity}</button>
+          <button className="btn" onClick={() => decrement(item?._id)}> - {item.quantity}</button>
         </div>
         <button onClick={()=>addtocart(item?._id)}>
           Add-cart
